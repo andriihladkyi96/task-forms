@@ -1,0 +1,70 @@
+<div class="form">
+  <h1>Іnformation about the owner of companies </h1>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput class="form-control" name="name" [(ngModel)]="employer.name" required minlength="2" maxlength="20"
+      pattern="[a-zA-Z][a-zA-Z_]*" #name="ngModel" />
+    <mat-error *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+      <span *ngIf="name.errors.required">Name is required. </span>
+      <span *ngIf="name.errors.minlength">Minimum length is 2 characters. </span>
+      <span *ngIf="name.errors.maxlength">Maximum length is 20 characters. </span>
+      <span *ngIf="name.errors.pattern && !name.errors.minlength">Name can contain only letters and dashes, dashes
+        cannot be the first character. </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Last name</mat-label>
+    <input matInput class="form-control" name="lastName" [(ngModel)]="employer.lastName" required minlength="2"
+      maxlength="20" pattern="[a-zA-Z][a-zA-Z_]*" #lastName="ngModel" />
+    <mat-error *ngIf="lastName.errors && (lastName.dirty || lastName.touched)" class="alert alert-danger">
+      <span *ngIf="lastName.errors.required">Last name is required. </span>
+      <span *ngIf="lastName.errors.minlength">Minimum length is 2 characters. </span>
+      <span *ngIf="lastName.errors.maxlength">Maximum length is 20 characters. </span>
+      <span *ngIf="lastName.errors.pattern && !lastName.errors.minlength">Last name can contain only letters and dashes,
+        dashes cannot be the first character. </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput class="form-control" type="email" [(ngModel)]="employer.email" required email #email="ngModel" />
+    <mat-error *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
+      <span *ngIf="email.errors.required">Email is required. </span>
+      <span *ngIf="email.errors.email">Email must contain at least the @ character </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Phone Number</mat-label>
+    <input matInput type="tel" class="form-control" [(ngModel)]="employer.phoneNumber" #phone="ngModel"/>
+  </mat-form-field>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Company name</mat-label>
+    <input matInput class="form-control" name="companyName" [(ngModel)]="employer.companyName" required minlength="2" maxlength="20"
+     #companyName="ngModel" />
+    <mat-error *ngIf="companyName.errors && (companyName.dirty || companyName.touched)" class="alert alert-danger">
+      <span *ngIf="companyName.errors.required">Name is required. </span>
+      <span *ngIf="companyName.errors.minlength">Minimum length is 2 characters. </span>
+      <span *ngIf="companyName.errors.maxlength">Maximum length is 20 characters. </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group full-width" appearance="outline">
+    <mat-label>Number of employees</mat-label>
+    <input matInput class="form-control" type="number" name="name" [(ngModel)]="employer.numberOfEmployees" required
+     min="2" #numberOfEmployees="ngModel" />
+    <mat-error *ngIf="numberOfEmployees.errors && (numberOfEmployees.dirty || numberOfEmployees.touched)" class="alert alert-danger">
+      <span *ngIf="numberOfEmployees.errors.required">Name is required. </span>
+      <span *ngIf="numberOfEmployees.errors.min">Number of employees must be more than 1. </span>
+    </mat-error>
+  </mat-form-field>
+  <div class="form-group" *ngIf="!isSaved">
+      <button mat-button class="btn btn-default" (click)="addEmployer()">Зберегти</button>
+  </div>
+  <div class="form-group" *ngIf="isSaved">
+      <button mat-button class="btn btn-default" (click)="editEmployer()">Змінити</button>
+  </div>
+</div>
+<!-- <div *ngIf="isSaved">
+  <app-reactive-forms [numberOfEmployees]="employer.numberOfEmployees"></app-reactive-forms>
+</div> -->
+<div>
+  <app-reactive-forms [numberOfEmployees]="employer.numberOfEmployees"></app-reactive-forms>
+</div>

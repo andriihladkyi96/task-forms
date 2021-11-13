@@ -1,56 +1,107 @@
-<form  [formGroup]="emploeeForm"   (ngSubmit)="submit()" novalidate> 
-  <!-- *ngFor="let emploee of emploees" -->
-  <div class="form-group">
-    <label>Name</label>
-    <input class="form-control" name="name" formControlName="emploeeName" />
-    <div class="alert alert-danger" *ngIf="emploeeForm.controls['emploeeName'].invalid && emploeeForm.controls['emploeeName'].touched">
-      No name
-    </div>
-  </div>
-  <div class="form-group">
-    <label>Last name</label>
-    <input class="form-control" name="name" formControlName="emploeeLastName" />
-    <div class="alert alert-danger" *ngIf="emploeeForm.controls['emploeeLastName'].invalid && emploeeForm.controls['emploeeLastName'].touched">
-      No last name
-    </div>
-  </div>
-  <!-- "emploeeName": new FormControl('', Validators.required),
-    "emploeeLastName": new FormControl(),
-    "emploeePhoneNumber": new FormControl("", Validators.pattern("[0-9]{10}")),
-    "emploeeEmail": new FormControl("", [Validators.required,Validators.email]),
-    "emploeePosition": new FormControl() -->
-  <div class="form-group">
-    <label>Телефон</label>
-    <input class="form-control" name="phone" formControlName="emploeePhoneNumber" />
-    <div class="alert alert-danger"
-      *ngIf="emploeeForm.controls['emploeePhoneNumber'].invalid && emploeeForm.controls['emploeePhoneNumber'].touched">
-      Некорректный номер телефона
-    </div>
-  </div>
-  <div class="form-group">
-    <label>Email</label>
-    <input class="form-control" name="email" formControlName="emploeeEmail" />
-    <div class="alert alert-danger"
-      *ngIf="emploeeForm.controls['emploeeEmail'].invalid && emploeeForm.controls['emploeeEmail'].touched">
-      Некорректный email
-    </div>
-  </div>
-  <div class="form-group">
-    <button class="btn btn-default" [disabled]="emploeeForm.invalid">
-      Отправить
+<div class="employeesData" *ngIf="!isEdit">
+  <div class="information">
+    <table mat-table [dataSource]="emploees" class="mat-elevation-z8">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef> Last name </th>
+        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef> Phone number </th>
+        <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> Position </th>
+        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <button class="btn-edit" (click)="editEmployees()">
+      <mat-icon>edit_note</mat-icon>
     </button>
   </div>
-</form> 
-
-<!-- <div class="example-form">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Email</mat-label>
-    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
-    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-      Please enter a valid email address
-    </mat-error>
-    <mat-error *ngIf="emailFormControl.hasError('required')">
-      Email is <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-</div> -->
+</div>
+<div class="container" *ngIf="isEdit">
+  <div *ngFor="let emploee of emploees" class="form">
+    <form *ngIf="emploee.isEdit" [formGroup]="emploeeForm" (ngSubmit)="submit(emploee.id - 1)" novalidate>
+      <h2>Information about employee {{emploee.id}}</h2>
+      <mat-form-field class="form-group full-width" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput class="form-control" name="name" formControlName="emploeeName">
+        <mat-error
+          *ngIf="emploeeForm.controls['emploeeName'].errors && (emploeeForm.controls['emploeeName'].dirty || emploeeForm.controls['emploeeName'].touched)"
+          class="alert alert-danger">
+          <span *ngIf="emploeeForm.controls['emploeeName'].errors.required">Name is required. </span>
+          <span *ngIf="emploeeForm.controls['emploeeName'].errors.minlength">Minimum length is 2 characters. </span>
+          <span *ngIf="emploeeForm.controls['emploeeName'].errors.maxlength">Maximum length is 20 characters. </span>
+          <span
+            *ngIf="emploeeForm.controls['emploeeName'].errors.pattern && !emploeeForm.controls['emploeeName'].errors.minlength">Name
+            can contain only letters and dashes, dashes cannot be the first character. </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-group full-width" appearance="outline">
+        <mat-label>Last name</mat-label>
+        <input matInput class="form-control" name="lastName" formControlName="emploeeLastName" />
+        <mat-error
+          *ngIf="emploeeForm.controls['emploeeLastName'].errors && (emploeeForm.controls['emploeeLastName'].dirty || emploeeForm.controls['emploeeLastName'].touched)"
+          class="alert alert-danger">
+          <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.required">Name is required. </span>
+          <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.minlength">Minimum length is 2 characters. </span>
+          <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.maxlength">Maximum length is 20 characters.
+          </span>
+          <span
+            *ngIf="emploeeForm.controls['emploeeLastName'].errors.pattern && !emploeeForm.controls['emploeeLastName'].errors.minlength">
+            Last name can contain only letters and dashes, dashes cannot be the first character. </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-group full-width" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput class="form-control" type="email" formControlName="emploeeEmail" />
+        <mat-error
+          *ngIf="emploeeForm.controls['emploeeEmail'].errors && (emploeeForm.controls['emploeeEmail'].dirty || emploeeForm.controls['emploeeEmail'].touched)"
+          class="alert alert-danger">
+          <span *ngIf="emploeeForm.controls['emploeeEmail'].errors.required">Email is required. </span>
+          <span *ngIf="emploeeForm.controls['emploeeEmail'].errors.email">Email must contain at least the @ character
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-group full-width" appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput type="tel" class="form-control" formControlName="emploeePhoneNumber" />
+        <mat-error
+          *ngIf="emploeeForm.controls['emploeePhoneNumber'].errors && (emploeeForm.controls['emploeePhoneNumber'].dirty || emploeeForm.controls['emploeePhoneNumber'].touched)"
+          class="alert alert-danger">
+          <span *ngIf="emploeeForm.controls['emploeePhoneNumber'].errors.pattern">Phone number is not correct</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-group full-width" appearance="outline">
+        <mat-label>Position</mat-label>
+        <input matInput class="form-control" name="emploeePosition" formControlName="emploeePosition" />
+        <mat-error
+          *ngIf="emploeeForm.controls['emploeePosition'].errors && (emploeeForm.controls['emploeePosition'].dirty || emploeeForm.controls['emploeePosition'].touched)"
+          class="alert alert-danger">
+          <span>Position can be only trainee, junior,middle or senior</span>
+        </mat-error>
+      </mat-form-field>
+      <div class="form-group full-width">
+        <button class="btn" [disabled]="emploeeForm.invalid">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

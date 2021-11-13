@@ -1,5 +1,5 @@
+<h1 class="title">Іnformation about the owner of companie </h1>
 <div class="form" *ngIf="employer.isEdit">
-  <h1>Іnformation about the owner of companie </h1>
   <mat-form-field class="form-group full-width" appearance="outline">
     <mat-label>Name</mat-label>
     <input matInput class="form-control" name="name" [(ngModel)]="employer.name" required minlength="2" maxlength="20"
@@ -37,7 +37,7 @@
     <input matInput type="tel" class="form-control" [(ngModel)]="employer.phoneNumber"
       pattern="(\\+380[\d]{9})|(0[\d]{9})" #phone="ngModel" />
     <mat-error *ngIf="phone.errors && (phone.dirty || phone.touched)" class="alert alert-danger">
-      <span *ngIf="phone.errors.email">Phone number is incorrect</span>
+      <span *ngIf="phone.errors.pattern">Phone number is incorrect</span>
     </mat-error>
   </mat-form-field>
   <mat-form-field class="form-group full-width" appearance="outline">
@@ -67,7 +67,7 @@
 <div class="employerData" *ngIf="!employer.isEdit">
   <div class="information">
     <table mat-table [dataSource]="employers" class="mat-elevation-z8">
-      <!-- Name Column -->
+      
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -101,12 +101,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <button class="btn-edit" (click)="editEmployer()">
-      <mat-icon>edit_note</mat-icon>
-    </button>
   </div>
 </div>
 
 <div *ngIf="!employer.isEdit">
-  <app-reactive-forms [emploees]="emploees" (saveEmploees)="saveEmploees($event)"></app-reactive-forms>
+  <app-reactive-forms [numberOfEmployees]="employer.numberOfEmployees"></app-reactive-forms>
 </div>

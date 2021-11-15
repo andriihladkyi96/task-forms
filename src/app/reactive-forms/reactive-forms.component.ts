@@ -1,5 +1,5 @@
 import { Emploee } from './../models/emploee';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,16 +7,25 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './reactive-forms.component.html',
   styleUrls: ['./reactive-forms.component.scss']
 })
-export class ReactiveFormsComponent implements OnInit {
+export class ReactiveFormsComponent implements OnInit, OnDestroy {
 
-  @Input() numberOfEmployees:number;
-  emploees: Emploee[] = [];
+  @Input() numberOfEmployees: number;
+  @Input() emploees: Emploee[];
   @Output() saveEmploees = new EventEmitter<Emploee[]>();
+
   displayedColumns: string[] = ['name', 'lastName', 'email', 'phoneNumber', 'position'];
   isEdit: boolean = true;
 
   ngOnInit(): void {
-    this.fillArrayOfEmployees()
+    this.fillArrayOfEmployees();
+    if (this.emploees.length !== 0) {
+      this.changeEdit();
+      debugger
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.saveEmploees.emit(this.emploees);
   }
 
   emploeeForm: FormGroup = new FormGroup({
@@ -51,10 +60,25 @@ export class ReactiveFormsComponent implements OnInit {
     return { "emploeePosition": true };
   }
 
-  private fillArrayOfEmployees(){
-    for (let i = 1; i <= this.numberOfEmployees; i++) {
-      this.emploees.push(new Emploee(i, '', '', '', '', '', true))
+  private fillArrayOfEmployees() {
+    debugger
+    if (this.emploees.length == 0) {
+      for (let i = 1; i <= this.numberOfEmployees; i++) {
+        this.emploees.push(new Emploee(i, '', '', '', '', '', true))
+      }
+    } else {
+      let index = this.numberOfEmployees - this.emploees.length;
+      if (index > 0) {
+        for (let i = 1; i <= index; i++) {
+          this.emploees.push(new Emploee(this.emploees.length + 1, '', '', '', '', '', true))
+        }
+      }
+      if (index < 0) {
+        for (let i = 1; i <= -index; i++) {
+          this.emploees.pop();
+        }
+      }
     }
-}
+  }
 }
 

@@ -1,3 +1,5 @@
 <div class="container">
-    <app-template-driven-forms></app-template-driven-forms>
+    <app-template-driven-forms [employer]="employer" [isEdit]="isEdit" (saveEmployer)="saveEmployer($event)" (saveIsEdit)="saveIsEdit($event)"></app-template-driven-forms>
+    <app-reactive-forms *ngIf="!isEdit" [numberOfEmployees]="employer.numberOfEmployees" [emploees]="emploees"
+        (saveEmploees)="saveEmploees($event)"></app-reactive-forms>
 </div>

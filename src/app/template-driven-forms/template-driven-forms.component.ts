@@ -1,6 +1,5 @@
-import { Emploee } from './../models/emploee';
 import { Employer } from './../models/employer';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 
 @Component({
@@ -10,15 +9,12 @@ import { Component } from '@angular/core';
 })
 export class TemplateDrivenFormsComponent {
 
-  employer: Employer = new Employer(1, "", "", "", "", "", 0, true);
+  @Input() employer: Employer;
+  @Input() isEdit: boolean;
+  @Output() saveEmployer = new EventEmitter<Employer>();
+  @Output() saveIsEdit = new EventEmitter<boolean>();
   displayedColumns: string[] = ['name', 'lastName', 'email', 'phoneNumber', 'companyName', 'numberOfEmployees'];
-  emploees: Emploee[] = [];
   employers: Employer[] = [];
-
-  saveEmploees(emploees: Emploee[]) {
-    this.emploees = { ...emploees };
-  }
-
 
   addEmployer() {
     let index = this.employers.findIndex(e => e.id === this.employer.id);
@@ -27,7 +23,12 @@ export class TemplateDrivenFormsComponent {
     } else {
       this.employers.push(this.employer);
     }
-    this.employer.isEdit = false;
+    this.saveEmployer.emit(this.employer);
+    this.saveIsEdit.emit(false);
+  }
+
+  editEmployer() {
+    this.saveIsEdit.emit(true);
   }
 }
 

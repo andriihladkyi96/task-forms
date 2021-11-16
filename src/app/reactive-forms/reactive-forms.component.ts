@@ -1,5 +1,5 @@
 import { Emploee } from './../models/emploee';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,17 +7,25 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
   templateUrl: './reactive-forms.component.html',
   styleUrls: ['./reactive-forms.component.scss']
 })
-export class ReactiveFormsComponent implements OnInit {
+export class ReactiveFormsComponent implements OnInit, OnDestroy {
 
   @Input() numberOfEmployees: number;
-  emploees: Emploee[] = [];
+  @Input() emploees: Emploee[];
   @Output() saveEmploees = new EventEmitter<Emploee[]>();
+
   displayedColumns: string[] = ['name', 'lastName', 'email', 'phoneNumber', 'position'];
   isEdit: boolean = true;
 
   ngOnInit(): void {
     this.fillArrayOfEmployees();
     this.fillFormArray();
+    // if (this.emploees.length !== 0) {
+      this.changeEdit();
+    // }
+  }
+
+  ngOnDestroy(): void {
+    this.saveEmploees.emit(this.emploees);
   }
 
   constructor(private fb: FormBuilder) { }
@@ -26,7 +34,7 @@ export class ReactiveFormsComponent implements OnInit {
     emploeeArrayForm: this.fb.array([])
   });
 
-  get emploeeArrayForm() : FormArray {
+  get emploeeArrayForm(): FormArray {
     return this.form.controls["emploeeArrayForm"] as FormArray;
   }
 
@@ -38,7 +46,7 @@ export class ReactiveFormsComponent implements OnInit {
     const emploeeForm = this.fb.group({
       "emploeeName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*"), Validators.minLength(2), Validators.maxLength(20)]],
       "emploeeLastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*")]],
-      "emploeePhoneNumber": [null,Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
+      "emploeePhoneNumber": [null, Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
       "emploeeEmail": ['', [Validators.required, Validators.email]],
       "emploeePosition": ['', [Validators.required, this.userNameValidator]]
     });
@@ -61,7 +69,12 @@ export class ReactiveFormsComponent implements OnInit {
     this.changeEdit();
   }
 
-  
+  editEmploees() {
+    this.emploees.forEach(e => e.isEdit = true);
+    this.changeEdit();
+  }
+
+
   private fillFormArray() {
     for (let i = 1; i <= this.numberOfEmployees; i++) {
       this.addEmploeeForm();
@@ -83,8 +96,22 @@ export class ReactiveFormsComponent implements OnInit {
   }
 
   private fillArrayOfEmployees() {
-    for (let i = 1; i <= this.numberOfEmployees; i++) {
-      this.emploees.push(new Emploee(i, '', '', '', '', '', true))
+    if (this.emploees.length == 0) {
+      for (let i = 1; i <= this.numberOfEmployees; i++) {
+        this.emploees.push(new Emploee(i, '', '', '', '', '', true))
+      }
+    } else {
+      let index = this.numberOfEmployees - this.emploees.length;
+      if (index > 0) {
+        for (let i = 1; i <= index; i++) {
+          this.emploees.push(new Emploee(this.emploees.length + 1, '', '', '', '', '', true))
+        }
+      }
+      if (index < 0) {
+        for (let i = 1; i <= -index; i++) {
+          this.emploees.pop();
+        }
+      }
     }
   }
 }

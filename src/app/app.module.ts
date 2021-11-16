@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatTableModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

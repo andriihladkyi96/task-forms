@@ -45,8 +45,8 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
 
   addEmploeeForm() {
     const emploeeForm = this.fb.group({
-      "emploeeName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*"), Validators.minLength(2), Validators.maxLength(20)]],
-      "emploeeLastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*")]],
+      "emploeeName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*"), Validators.minLength(2), Validators.maxLength(20)]],
+      "emploeeLastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*")]],
       "emploeePhoneNumber": [null, Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
       "emploeeEmail": ['', [Validators.required, Validators.email]],
       "emploeePosition": ['', [Validators.required]]

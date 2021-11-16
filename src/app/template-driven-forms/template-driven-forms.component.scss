@@ -9,8 +9,7 @@
     width: 100%;
 }
 
-
-.title{
+.title {
     max-width: 100%;
     text-align: center;
     padding: 10px;
@@ -30,8 +29,12 @@ table {
     right: 0;
 }
 
-.employerData{
+.employerData {
     margin-bottom: 30px;
+}
+
+mat-slider {
+    width: 100%;
 }
 
 .btn {

@@ -3,7 +3,7 @@
   <mat-form-field class="form-group full-width" appearance="outline">
     <mat-label>Name</mat-label>
     <input matInput class="form-control" name="name" [(ngModel)]="employer.name" required minlength="2" maxlength="20"
-      pattern="[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*" #name="ngModel" />
+      pattern="[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*" #name="ngModel" />
     <mat-error *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
       <span *ngIf="name.errors.required">Name is required. </span>
       <span *ngIf="name.errors.minlength">Minimum length is 2 characters. </span>
@@ -15,7 +15,7 @@
   <mat-form-field class="form-group full-width" appearance="outline">
     <mat-label>Last name</mat-label>
     <input matInput class="form-control" name="lastName" [(ngModel)]="employer.lastName" required minlength="2"
-      maxlength="20" pattern="[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*" #lastName="ngModel" />
+      maxlength="20" pattern="[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*" #lastName="ngModel" />
     <mat-error *ngIf="lastName.errors && (lastName.dirty || lastName.touched)" class="alert alert-danger">
       <span *ngIf="lastName.errors.required">Last name is required. </span>
       <span *ngIf="lastName.errors.minlength">Minimum length is 2 characters. </span>
@@ -52,8 +52,10 @@
   </mat-form-field>
   <mat-form-field class="form-group full-width" appearance="outline">
     <mat-label>Number of employees</mat-label>
-    <input matInput class="form-control" type="number" name="name" [(ngModel)]="employer.numberOfEmployees" required
-      min="2" pattern="^([0-9])*" #numberOfEmployees="ngModel" />
+    <input matInput class="form-control" type="number" [(ngModel)]="employer.numberOfEmployees" required min="2"
+      pattern="^([0-9])*" #numberOfEmployees="ngModel" />
+    <mat-slider class="form-control" thumbLabel step="1" min="2" max="60" [(ngModel)]="employer.numberOfEmployees"
+      #numberOfEmployees="ngModel"></mat-slider>
     <mat-error *ngIf="numberOfEmployees.errors && (numberOfEmployees.dirty || numberOfEmployees.touched)"
       class="alert alert-danger">
       <span *ngIf="numberOfEmployees.errors.required">Name is required. </span>
@@ -62,13 +64,14 @@
     </mat-error>
   </mat-form-field>
   <div class="form-group">
-      <button class="btn" (click)="addEmployer()" [disabled]="name.invalid || email.invalid || lastName.invalid || numberOfEmployees.invalid || companyName.invalid" >Save</button>
+      <button class="btn" (click)="addEmployer()"
+      [disabled]="name.invalid || email.invalid || lastName.invalid || numberOfEmployees.invalid || companyName.invalid">Save</button>
   </div>
 </div>
 <div class="employerData" *ngIf="!isEdit">
   <div class="information">
     <table mat-table [dataSource]="employers" class="mat-elevation-z8">
-      
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>

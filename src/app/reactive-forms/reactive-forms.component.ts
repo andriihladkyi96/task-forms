@@ -19,9 +19,9 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fillArrayOfEmployees();
     this.fillFormArray();
-    // if (this.emploees.length !== 0) {
+    if (this.emploees.length !== 0) {
       this.changeEdit();
-    // }
+    }
   }
 
   ngOnDestroy(): void {

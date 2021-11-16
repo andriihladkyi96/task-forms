@@ -14,6 +14,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
   @Output() saveEmploees = new EventEmitter<Emploee[]>();
 
   displayedColumns: string[] = ['name', 'lastName', 'email', 'phoneNumber', 'position'];
+  emploeePositionList: string[] = ["trainee", "junior", "middle", "senior"];
   isEdit: boolean = true;
 
   ngOnInit(): void {
@@ -48,7 +49,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
       "emploeeLastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії_]*")]],
       "emploeePhoneNumber": [null, Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
       "emploeeEmail": ['', [Validators.required, Validators.email]],
-      "emploeePosition": ['', [Validators.required, this.userNameValidator]]
+      "emploeePosition": ['', [Validators.required]]
     });
 
     this.emploeeArrayForm.push(emploeeForm);

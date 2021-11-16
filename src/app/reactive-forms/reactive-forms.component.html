@@ -91,7 +91,12 @@
         </mat-form-field>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Position</mat-label>
-          <input matInput class="form-control" name="emploeePosition" formControlName="emploeePosition" />
+          <!-- <input matInput class="form-control" name="emploeePosition" formControlName="emploeePosition" /> -->
+          <mat-select class="form-control"  name="emploeePosition" formControlName="emploeePosition">
+            <mat-option *ngFor="let position of emploeePositionList" [value]="emploeePositionList">
+              {{position}}
+            </mat-option>
+          </mat-select>
           <mat-error
             *ngIf="emploeeForm.controls['emploeePosition'].errors && (emploeeForm.controls['emploeePosition'].dirty || emploeeForm.controls['emploeePosition'].touched)"
             class="alert alert-danger">

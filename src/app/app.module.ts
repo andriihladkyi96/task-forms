@@ -1,3 +1,4 @@
+import { LocalStorageService } from './service/local-storage.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -35,7 +36,7 @@ import {MatSliderModule} from '@angular/material/slider';
     MatSelectModule,
     MatSliderModule
   ],
-  providers: [],
+  providers: [LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

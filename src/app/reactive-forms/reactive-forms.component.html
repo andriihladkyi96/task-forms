@@ -41,63 +41,63 @@
         <h2>Information about employee {{i + 1}}</h2>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Name</mat-label>
-          <input matInput class="form-control" name="name" formControlName="emploeeName">
+          <input matInput class="form-control" name="name" formControlName="name">
           <mat-error
-            *ngIf="emploeeForm.controls['emploeeName'].errors && (emploeeForm.controls['emploeeName'].dirty || emploeeForm.controls['emploeeName'].touched)"
+            *ngIf="emploeeForm.controls['name'].errors && (emploeeForm.controls['name'].dirty || emploeeForm.controls['name'].touched)"
             class="alert alert-danger">
-            <span *ngIf="emploeeForm.controls['emploeeName'].errors.required">Name is required. </span>
-            <span *ngIf="emploeeForm.controls['emploeeName'].errors.minlength">Minimum length is 2 characters. </span>
-            <span *ngIf="emploeeForm.controls['emploeeName'].errors.maxlength">Maximum length is 20 characters. </span>
+            <span *ngIf="emploeeForm.controls['name'].errors.required">Name is required. </span>
+            <span *ngIf="emploeeForm.controls['name'].errors.minlength">Minimum length is 2 characters. </span>
+            <span *ngIf="emploeeForm.controls['name'].errors.maxlength">Maximum length is 20 characters. </span>
             <span
-              *ngIf="emploeeForm.controls['emploeeName'].errors.pattern && !emploeeForm.controls['emploeeName'].errors.minlength">Name
+              *ngIf="emploeeForm.controls['name'].errors.pattern && !emploeeForm.controls['name'].errors.minlength">Name
               can contain only letters and dashes, dashes cannot be the first character. </span>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Last name</mat-label>
-          <input matInput class="form-control" name="lastName" formControlName="emploeeLastName" />
+          <input matInput class="form-control" name="lastName" formControlName="lastName" />
           <mat-error
-            *ngIf="emploeeForm.controls['emploeeLastName'].errors && (emploeeForm.controls['emploeeLastName'].dirty || emploeeForm.controls['emploeeLastName'].touched)"
+            *ngIf="emploeeForm.controls['lastName'].errors && (emploeeForm.controls['lastName'].dirty || emploeeForm.controls['lastName'].touched)"
             class="alert alert-danger">
-            <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.required">Name is required. </span>
-            <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.minlength">Minimum length is 2 characters.
+            <span *ngIf="emploeeForm.controls['lastName'].errors.required">Name is required. </span>
+            <span *ngIf="emploeeForm.controls['lastName'].errors.minlength">Minimum length is 2 characters.
             </span>
-            <span *ngIf="emploeeForm.controls['emploeeLastName'].errors.maxlength">Maximum length is 20 characters.
+            <span *ngIf="emploeeForm.controls['lastName'].errors.maxlength">Maximum length is 20 characters.
             </span>
             <span
-              *ngIf="emploeeForm.controls['emploeeLastName'].errors.pattern && !emploeeForm.controls['emploeeLastName'].errors.minlength">
+              *ngIf="emploeeForm.controls['lastName'].errors.pattern && !emploeeForm.controls['lastName'].errors.minlength">
               Last name can contain only letters and dashes, dashes cannot be the first character. </span>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput class="form-control" type="email" formControlName="emploeeEmail" />
+          <input matInput class="form-control" type="email" formControlName="email" />
           <mat-error
-            *ngIf="emploeeForm.controls['emploeeEmail'].errors && (emploeeForm.controls['emploeeEmail'].dirty || emploeeForm.controls['emploeeEmail'].touched)"
+            *ngIf="emploeeForm.controls['email'].errors && (emploeeForm.controls['email'].dirty || emploeeForm.controls['email'].touched)"
             class="alert alert-danger">
-            <span *ngIf="emploeeForm.controls['emploeeEmail'].errors.required">Email is required. </span>
-            <span *ngIf="emploeeForm.controls['emploeeEmail'].errors.email">Email must contain at least the @ character
+            <span *ngIf="emploeeForm.controls['email'].errors.required">Email is required. </span>
+            <span *ngIf="emploeeForm.controls['email'].errors.email">Email must contain at least the @ character
             </span>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Phone Number</mat-label>
-          <input matInput class="form-control" formControlName="emploeePhoneNumber" />
+          <input matInput class="form-control" formControlName="phoneNumber" />
           <mat-error
-            *ngIf="emploeeForm.controls['emploeePhoneNumber'].errors && (emploeeForm.controls['emploeePhoneNumber'].dirty || emploeeForm.controls['emploeePhoneNumber'].touched)"
+            *ngIf="emploeeForm.controls['phoneNumber'].errors && (emploeeForm.controls['phoneNumber'].dirty || emploeeForm.controls['phoneNumber'].touched)"
             class="alert alert-danger">
-            <span *ngIf="emploeeForm.controls['emploeePhoneNumber'].errors.pattern">Phone number is not correct</span>
+            <span *ngIf="emploeeForm.controls['phoneNumber'].errors.pattern">Phone number is not correct</span>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="form-group full-width" appearance="outline">
           <mat-label>Position</mat-label>
-          <mat-select class="form-control"  name="emploeePosition" formControlName="emploeePosition">
-            <mat-option *ngFor="let position of emploeePositionList" [value]="position">
+          <mat-select class="form-control"  name="position" formControlName="position">
+            <mat-option *ngFor="let position of positionList" [value]="position">
               {{position}}
             </mat-option>
           </mat-select>
           <mat-error
-            *ngIf="emploeeForm.controls['emploeePosition'].errors && (emploeeForm.controls['emploeePosition'].dirty || emploeeForm.controls['emploeePosition'].touched)"
+            *ngIf="emploeeForm.controls['position'].errors && (emploeeForm.controls['position'].dirty || emploeeForm.controls['position'].touched)"
             class="alert alert-danger">
             <span>Position can be only trainee, junior,middle or senior</span>
           </mat-error>

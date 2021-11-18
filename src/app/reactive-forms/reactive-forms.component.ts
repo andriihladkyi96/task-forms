@@ -7,26 +7,20 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
   templateUrl: './reactive-forms.component.html',
   styleUrls: ['./reactive-forms.component.scss']
 })
-export class ReactiveFormsComponent implements OnInit, OnDestroy {
+export class ReactiveFormsComponent implements OnInit{
 
   @Input() numberOfEmployees: number;
   @Input() emploees: Emploee[];
   @Output() saveEmploees = new EventEmitter<Emploee[]>();
 
   displayedColumns: string[] = ['name', 'lastName', 'email', 'phoneNumber', 'position'];
-  emploeePositionList: string[] = ["trainee", "junior", "middle", "senior"];
+  positionList: string[] = ["trainee", "junior", "middle", "senior"];
   isEdit: boolean = true;
 
   ngOnInit(): void {
     this.fillArrayOfEmployees();
     this.fillFormArray();
-    if (this.emploees.length !== 0) {
-      this.changeEdit();
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.saveEmploees.emit(this.emploees);
+    this.editEmploees();
   }
 
   constructor(private fb: FormBuilder) { }
@@ -39,19 +33,18 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
     return this.form.controls["emploeeArrayForm"] as FormArray;
   }
 
-  getControls(): FormGroup[] {
+  getControls() {
     return (this.form.controls["emploeeArrayForm"] as FormArray).controls as FormGroup[];
   }
 
   addEmploeeForm() {
     const emploeeForm = this.fb.group({
-      "emploeeName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*"), Validators.minLength(2), Validators.maxLength(20)]],
-      "emploeeLastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*")]],
-      "emploeePhoneNumber": [null, Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
-      "emploeeEmail": ['', [Validators.required, Validators.email]],
-      "emploeePosition": ['', [Validators.required]]
+      "name": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*"), Validators.minLength(2), Validators.maxLength(20)]],
+      "lastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*")]],
+      "phoneNumber": [null, Validators.pattern("^((0[0-9]{9})|(\\+380[0-9]{9}))*")],
+      "email": ['', [Validators.required, Validators.email]],
+      "position": ['', [Validators.required]]
     });
-
     this.emploeeArrayForm.push(emploeeForm);
   }
 
@@ -61,17 +54,9 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
   }
 
   submit(id: number) {
-    this.emploees[id].email = this.emploeeArrayForm.controls[id].value.emploeeEmail;
-    this.emploees[id].name = this.emploeeArrayForm.controls[id].value.emploeeName;
-    this.emploees[id].lastName = this.emploeeArrayForm.controls[id].value.emploeeLastName;
-    this.emploees[id].phoneNumber = this.emploeeArrayForm.controls[id].value.emploeePhoneNumber;
-    this.emploees[id].position = this.emploeeArrayForm.controls[id].value.emploeePosition;
-    this.emploees[id].isEdit = false;
-    this.changeEdit();
-  }
-
-  editEmploees() {
-    this.emploees.forEach(e => e.isEdit = true);
+    this.emploees[id] = Object.assign(this.emploees[id],{isEdit: false},this.emploeeArrayForm.controls[id].value);
+    debugger
+    this.saveEmploees.emit(this.emploees);
     this.changeEdit();
   }
 
@@ -80,23 +65,22 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
     for (let i = 1; i <= this.numberOfEmployees; i++) {
       this.addEmploeeForm();
     }
+    this.emploeeArrayForm.patchValue(this.emploees);
+  }
+
+  editEmploees() {
+    this.emploees.forEach(e => e.isEdit = true);
+    this.changeEdit();
   }
 
   private changeEdit() {
+    if(this.emploees.length != 0){
     this.isEdit = !this.emploees.every(e => e.isEdit == false);
-  }
-
-  private userNameValidator(control: FormControl): { [s: string]: boolean } | null {
-
-    const value: string = control.value.toLowerCase();
-
-    if (value === "trainee" || value === "junior" || value === "middle" || value === "senior") {
-      return null;
     }
-    return { "emploeePosition": true };
   }
 
   private fillArrayOfEmployees() {
+    debugger
     if (this.emploees.length == 0) {
       for (let i = 1; i <= this.numberOfEmployees; i++) {
         this.emploees.push(new Emploee(i, '', '', '', '', '', true))

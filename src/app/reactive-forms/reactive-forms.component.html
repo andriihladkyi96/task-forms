@@ -31,6 +31,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <button class="btn-edit" (click)="editEmploees()">
+      <mat-icon>edit_note</mat-icon>
+    </button>
   </div>
 </div>
 <div class="container" *ngIf="isEdit" [formGroup]="form" class="form">

@@ -1,13 +1,13 @@
 import { Emploee } from './../models/emploee';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reactive-forms',
   templateUrl: './reactive-forms.component.html',
   styleUrls: ['./reactive-forms.component.scss']
 })
-export class ReactiveFormsComponent implements OnInit{
+export class ReactiveFormsComponent implements OnInit {
 
   @Input() numberOfEmployees: number;
   @Input() emploees: Emploee[];
@@ -37,7 +37,23 @@ export class ReactiveFormsComponent implements OnInit{
     return (this.form.controls["emploeeArrayForm"] as FormArray).controls as FormGroup[];
   }
 
-  addEmploeeForm() {
+  submit(id: number) {
+    this.emploees[id] = Object.assign(this.emploees[id], { isEdit: false }, this.emploeeArrayForm.controls[id].value);
+    this.saveEmploees.emit(this.emploees);
+    this.changeEdit();
+  }
+
+
+  private fillFormArray() {
+    //creates a FormGroup for each employee
+    for (let i = 1; i <= this.numberOfEmployees; i++) {
+      this.addEmploeeForm();
+    }
+    // fills the form with values ​​from the server
+    this.emploeeArrayForm.patchValue(this.emploees);
+  }
+
+  private addEmploeeForm() {
     const emploeeForm = this.fb.group({
       "name": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*"), Validators.minLength(2), Validators.maxLength(20)]],
       "lastName": ['', [Validators.required, Validators.pattern("[a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії][a-zA-ZА-ЩЬЮЯҐЄІЇа-щьюяґєії\\-]*")]],
@@ -47,40 +63,22 @@ export class ReactiveFormsComponent implements OnInit{
     });
     this.emploeeArrayForm.push(emploeeForm);
   }
-
-
-  deleteEmploeeForm(lessonIndex: number) {
-    this.emploeeArrayForm.removeAt(lessonIndex);
-  }
-
-  submit(id: number) {
-    this.emploees[id] = Object.assign(this.emploees[id],{isEdit: false},this.emploeeArrayForm.controls[id].value);
-    debugger
-    this.saveEmploees.emit(this.emploees);
-    this.changeEdit();
-  }
-
-
-  private fillFormArray() {
-    for (let i = 1; i <= this.numberOfEmployees; i++) {
-      this.addEmploeeForm();
-    }
-    this.emploeeArrayForm.patchValue(this.emploees);
-  }
-
+  
+  // enable editing for employees
   editEmploees() {
     this.emploees.forEach(e => e.isEdit = true);
     this.changeEdit();
   }
 
+  //shows a table with employees only when each employee is entered
   private changeEdit() {
-    if(this.emploees.length != 0){
-    this.isEdit = !this.emploees.every(e => e.isEdit == false);
+    if (this.emploees.length !== 0) {
+      this.isEdit = !this.emploees.every(e => e.isEdit == false);
     }
   }
 
+  // fill the array with employees depending on the change in the number of employees
   private fillArrayOfEmployees() {
-    debugger
     if (this.emploees.length == 0) {
       for (let i = 1; i <= this.numberOfEmployees; i++) {
         this.emploees.push(new Emploee(i, '', '', '', '', '', true))
